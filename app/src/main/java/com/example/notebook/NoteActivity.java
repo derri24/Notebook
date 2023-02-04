@@ -17,19 +17,23 @@ import java.sql.SQLException;
 
 public class NoteActivity extends AppCompatActivity {
 
-    private SQLiteDatabase db;
+    public SQLiteDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
+        connect();
     }
-
+    private void connect() {
+        db = getBaseContext().openOrCreateDatabase("application.db", MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY,name TEXT, note Text)");
+    }
  
 
     public void insert(String name, String content) {
-        db.execSQL("INSERT OR IGNORE INTO data VALUES ('" + name + "','" + content + "');");
+        db.execSQL("INSERT OR IGNORE INTO data(name,note) VALUES ('" + name + "','" + content + "');");
     }
 
     public void saveNote(View view) {
@@ -37,10 +41,8 @@ public class NoteActivity extends AppCompatActivity {
             String name = ((EditText) findViewById(R.id.nameBox)).getText().toString();
             String note = ((EditText) findViewById(R.id.noteBox)).getText().toString();
             insert(name, note);
-            
-            Intent intent = new Intent (this, MainActivity.class);
 
-            startActivity(intent);
+            finish();
 
         } catch (Exception e) {
             throw new RuntimeException(e);

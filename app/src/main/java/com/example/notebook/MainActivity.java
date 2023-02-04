@@ -3,6 +3,7 @@ package com.example.notebook;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,12 +19,23 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         connect();
+        //GetData();
+    }
+
+    public void Delete() {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         GetData();
     }
 
@@ -34,27 +46,54 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
 
-        Cursor query = db.rawQuery("SELECT * FROM data;", null);
+        layout.removeAllViews();
+        Cursor query = db.rawQuery("SELECT id,name,note FROM data;", null);
         int i = 0;
         while (query.moveToNext()) {
 
-            String name = query.getString(0);
-            TextView textView = new TextView(this);
-            textView.setText(name);
-            textView.setId(i);
 
-            textView.setTextSize(60);
+            int id = query.getInt(0);
+            String name = query.getString(1);
+            String note = query.getString(2);
+            TextView textView = new TextView(this);
+            textView.setText("id:" + id + " name: " + name + " note: " + note);
+            textView.setId(i);
+            textView.setTextSize(18);
             textView.setTop(50);
+            textView.setEms(13);
+
+            Button deleteBtn = new Button(this);
+            deleteBtn.setId(i);
+            deleteBtn.setText("⌫");
+            deleteBtn.setWidth(50);
+            deleteBtn.setHeight(50);
+            deleteBtn.setTop(50);
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+            Button editBtn = new Button(this);
+            editBtn.setId(i);
+            editBtn.setText("✏️");
+            // editBtn.set(50);
+            editBtn.setHeight(50);
+            editBtn.setTop(50);
+
 
             //setContentView(scrollView);
             layout.addView(textView);
+            layout.addView(deleteBtn);
+            layout.addView(editBtn);
             i++;
         }
     }
 
     private void connect() {
         db = getBaseContext().openOrCreateDatabase("application.db", MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS data (name TEXT, note Text)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY,name TEXT, note Text)");
     }
 
     public void createNote(View view) {
