@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NoteActivity">
+
+    <Button
+        android:id="@+id/saveNoteBtn"
+        android:layout_width="50dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="300dp"
+        android:text="OK"
+        android:textSize="31px"
+        android:onClick="saveNote"/>
+    <EditText
+        android:id="@+id/nameBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft ="10dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/light_pink"
+        android:ems="13"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:textCursorDrawable="@color/light_pink"/>
+
+    <EditText
+        android:id="@+id/noteBox"
+        android:layout_width="375dp"
+        android:layout_height="560dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="70dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="Enter note.."
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textCursorDrawable="@color/light_pink"/>
+
+
+
+
+</RelativeLayout>
