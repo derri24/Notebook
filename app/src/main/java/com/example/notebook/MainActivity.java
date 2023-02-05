@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,10 +68,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //TOLOWER
     private void getData() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
         layout.removeAllViews();
 
+
+        LinearLayout relativeLayout = new LinearLayout(this);
         Cursor query;
         try {
             String searchText = ((EditText) findViewById(R.id.search)).getText().toString();
@@ -82,9 +88,11 @@ public class MainActivity extends AppCompatActivity {
                 Button deleteBtn = createDeleteButton(i, id);
                 Button updateBtn = createUpdateButton(i, id);
 
-                layout.addView(textView);
-                layout.addView(updateBtn);
-                layout.addView(deleteBtn);
+                relativeLayout.addView(textView,200,80);
+                relativeLayout.addView(deleteBtn,150,150);
+                relativeLayout.addView(updateBtn,150,150);
+
+                layout.addView(relativeLayout,500,500);
                 i++;
             }
 
@@ -97,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = new TextView(this);
         textView.setText(name);
         textView.setId(i);
-        textView.setTextSize(18);
+        textView.setTextSize(20);
         textView.setTop(50);
-        textView.setEms(13);
+        textView.setEms(10);
         return textView;
     }
 
@@ -107,10 +115,15 @@ public class MainActivity extends AppCompatActivity {
         Button deleteBtn = new Button(this);
         deleteBtn.setId(i);
         deleteBtn.setText("⌫");
-        deleteBtn.setWidth(50);
-        deleteBtn.setHeight(50);
-        deleteBtn.setTop(50);
-        deleteBtn.setLeft(500);
+        deleteBtn.setBackgroundColor(Color.parseColor("#ff4040"));
+        deleteBtn.setTextColor(Color.parseColor("#ffffff"));
+        deleteBtn.setTextSize(20);
+      //  deleteBtn.setWidth(50);
+        //deleteBtn.setHeight(50);
+        deleteBtn.setTop(150);
+       // deleteBtn.setX(200);
+        //deleteBtn.setY(200);
+        deleteBtn.setLeft(300);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,8 +143,16 @@ public class MainActivity extends AppCompatActivity {
         Button updateBtn = new Button(this);
         updateBtn.setId(i);
         updateBtn.setText("✏️");
-        updateBtn.setHeight(50);
+        updateBtn.setTextSize(20);
+       // updateBtn.setHeight(50);
+        updateBtn.setBackgroundColor(Color.parseColor("#abdfff"));
+        updateBtn.setTextColor(Color.parseColor("#ffffff"));
+
         updateBtn.setTop(50);
+        // deleteBtn.setX(200);
+        //deleteBtn.setY(200);
+        updateBtn.setLeft(500);
+       // updateBtn.setLeft(100);
 
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
