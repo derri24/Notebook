@@ -14,7 +14,8 @@
         android:layout_marginTop="7dp"
         android:layout_marginLeft="300dp"
         android:text="+"
-        android:textSize="55px"
+        android:textColor="#ffffff"
+        android:textSize="80px"
         android:onClick="createNote"/>
 
     <EditText
@@ -41,7 +42,6 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:scrollbars="vertical"
             android:orientation="vertical"> </LinearLayout>
     </ScrollView>

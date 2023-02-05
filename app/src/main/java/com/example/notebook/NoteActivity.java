@@ -52,6 +52,10 @@ public class NoteActivity extends AppCompatActivity {
         String name = query.getString(0);
         String note = query.getString(1);
 
+        if (Objects.equals(name, "(Untitled)")){
+            name="";
+        }
+
         ((EditText) findViewById(R.id.nameBox)).setText(name);
         ((EditText) findViewById(R.id.noteBox)).setText(note);
     }
@@ -70,6 +74,9 @@ public class NoteActivity extends AppCompatActivity {
 
     private void insert(String name, String note) {
         try {
+            if (Objects.equals(name, "")){
+                name="(Untitled)";
+            }
             db.execSQL("INSERT OR IGNORE INTO data(name,note) VALUES ('" + name + "','" + note + "');");
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -78,6 +85,9 @@ public class NoteActivity extends AppCompatActivity {
 
     private void update(String name, String note) {
         try {
+            if (Objects.equals(name, "")){
+                name="(Untitled)";
+            }
             db.execSQL("UPDATE data SET note ='" + note + "', name = '" + name + "' WHERE id =" + id + ";");
         } catch (Exception e) {
             throw new RuntimeException(e);

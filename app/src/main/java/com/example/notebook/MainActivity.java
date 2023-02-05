@@ -2,10 +2,12 @@ package com.example.notebook;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +18,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,17 +72,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TOLOWER
     private void getData() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
         layout.removeAllViews();
 
 
-        LinearLayout relativeLayout = new LinearLayout(this);
         Cursor query;
         try {
             String searchText = ((EditText) findViewById(R.id.search)).getText().toString();
-            query = db.rawQuery("SELECT id,name FROM data WHERE name LIKE '" + searchText + "%';", null);
+            query = db.rawQuery("SELECT id,name FROM data WHERE name LIKE '%" + searchText + "%';", null);
             int i = 0;
             while (query.moveToNext()) {
                 int id = query.getInt(0);
@@ -87,12 +89,15 @@ public class MainActivity extends AppCompatActivity {
                 TextView textView = createTextView(i, name);
                 Button deleteBtn = createDeleteButton(i, id);
                 Button updateBtn = createUpdateButton(i, id);
+                TextView space = new TextView(this);
 
-                relativeLayout.addView(textView,200,80);
-                relativeLayout.addView(deleteBtn,150,150);
-                relativeLayout.addView(updateBtn,150,150);
+                LinearLayout linearLayout = new LinearLayout(this);
+                linearLayout.addView(textView, 706, 140);
+                linearLayout.addView(updateBtn, 140, 140);
+                linearLayout.addView(space, 17, 140);
+                linearLayout.addView(deleteBtn, 140, 140);
 
-                layout.addView(relativeLayout,500,500);
+                layout.addView(linearLayout, 1100, 155);
                 i++;
             }
 
@@ -103,10 +108,17 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView createTextView(int i, String name) {
         TextView textView = new TextView(this);
+        if (name.length() > 18) {
+            name = name.substring(0, 18);
+            char[] charsName = name.toCharArray();
+            charsName[15] = '.';
+            charsName[16] = '.';
+            charsName[17] = '.';
+            name = String.valueOf(charsName);
+        }
         textView.setText(name);
         textView.setId(i);
-        textView.setTextSize(20);
-        textView.setTop(50);
+        textView.setTextSize(22);
         textView.setEms(10);
         return textView;
     }
@@ -118,16 +130,12 @@ public class MainActivity extends AppCompatActivity {
         deleteBtn.setBackgroundColor(Color.parseColor("#ff4040"));
         deleteBtn.setTextColor(Color.parseColor("#ffffff"));
         deleteBtn.setTextSize(20);
-      //  deleteBtn.setWidth(50);
-        //deleteBtn.setHeight(50);
-        deleteBtn.setTop(150);
-       // deleteBtn.setX(200);
-        //deleteBtn.setY(200);
-        deleteBtn.setLeft(300);
+
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
+
                     db.execSQL(" DELETE FROM data WHERE id =" + id + ";");
                     getData();
                 } catch (Exception e) {
@@ -144,15 +152,8 @@ public class MainActivity extends AppCompatActivity {
         updateBtn.setId(i);
         updateBtn.setText("✏️");
         updateBtn.setTextSize(20);
-       // updateBtn.setHeight(50);
         updateBtn.setBackgroundColor(Color.parseColor("#abdfff"));
         updateBtn.setTextColor(Color.parseColor("#ffffff"));
-
-        updateBtn.setTop(50);
-        // deleteBtn.setX(200);
-        //deleteBtn.setY(200);
-        updateBtn.setLeft(500);
-       // updateBtn.setLeft(100);
 
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
