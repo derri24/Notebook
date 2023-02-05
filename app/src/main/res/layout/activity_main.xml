@@ -26,7 +26,8 @@
         android:ems="13"
         android:inputType="textPersonName"
         android:backgroundTint="@color/light_pink"
-        android:hint="Search notes" />
+        android:hint="Search notes"
+        />
 
 
     <ScrollView

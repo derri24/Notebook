@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,6 +21,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connect();
+        EditText myTextBox = (EditText) findViewById(R.id.search);
+        myTextBox.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                getData();
+            }
+        });
     }
 
     @Override
@@ -52,8 +68,11 @@ public class MainActivity extends AppCompatActivity {
     private void getData() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
         layout.removeAllViews();
+
+        Cursor query;
         try {
-            Cursor query = db.rawQuery("SELECT id,name,note FROM data;", null);
+            String searchText = ((EditText) findViewById(R.id.search)).getText().toString();
+            query = db.rawQuery("SELECT id,name FROM data WHERE name LIKE '" + searchText + "%';", null);
             int i = 0;
             while (query.moveToNext()) {
                 int id = query.getInt(0);
@@ -72,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private TextView createTextView(int i, String name) {
