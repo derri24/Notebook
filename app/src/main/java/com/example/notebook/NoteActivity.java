@@ -35,25 +35,27 @@ public class NoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
-        connect();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        connect();
         if (Objects.equals(activity, "UPDATE"))
             getData();
     }
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        db.close();
+    }
     private void getData() {
-
         Cursor query = db.rawQuery("SELECT name,note FROM data WHERE id=" + id + ";", null);
         query.moveToNext();
         String name = query.getString(0);
         String note = query.getString(1);
-
-        if (Objects.equals(name, "(Untitled)")){
-            name="";
+        if (Objects.equals(name, "(Untitled)")) {
+            name = "";
         }
 
         ((EditText) findViewById(R.id.nameBox)).setText(name);
@@ -74,8 +76,8 @@ public class NoteActivity extends AppCompatActivity {
 
     private void insert(String name, String note) {
         try {
-            if (Objects.equals(name, "")){
-                name="(Untitled)";
+            if (Objects.equals(name, "")) {
+                name = "(Untitled)";
             }
             db.execSQL("INSERT OR IGNORE INTO data(name,note) VALUES ('" + name + "','" + note + "');");
         } catch (Exception e) {
@@ -85,8 +87,8 @@ public class NoteActivity extends AppCompatActivity {
 
     private void update(String name, String note) {
         try {
-            if (Objects.equals(name, "")){
-                name="(Untitled)";
+            if (Objects.equals(name, "")) {
+                name = "(Untitled)";
             }
             db.execSQL("UPDATE data SET note ='" + note + "', name = '" + name + "' WHERE id =" + id + ";");
         } catch (Exception e) {

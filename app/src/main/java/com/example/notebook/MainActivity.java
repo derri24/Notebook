@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        connect();
         EditText myTextBox = (EditText) findViewById(R.id.search);
         myTextBox.addTextChangedListener(new TextWatcher() {
 
@@ -46,9 +45,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        connect();
         getData();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        db.close();
+    }
     public void createNote(View view) {
         Intent intent = new Intent(this, NoteActivity.class);
         NoteActivity.setActivity("CREATE");
