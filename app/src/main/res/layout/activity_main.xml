@@ -32,7 +32,9 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scroll">
+        android:id="@+id/scroll"
+        android:layout_marginTop="80dp">
+
         <!--  сюда и вставляй свой код-->
 
         <LinearLayout

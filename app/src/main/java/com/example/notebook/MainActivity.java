@@ -28,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
         //GetData();
     }
 
-    public void Delete() {
-
-    }
 
     @Override
     protected void onStart() {
@@ -52,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
         while (query.moveToNext()) {
 
 
-            int id = query.getInt(0);
+            int idM = query.getInt(0);
             String name = query.getString(1);
             String note = query.getString(2);
             TextView textView = new TextView(this);
-            textView.setText("id:" + id + " name: " + name + " note: " + note);
+            textView.setText("id:" + idM + " name: " + name + " note: " + note);
             textView.setId(i);
             textView.setTextSize(18);
             textView.setTop(50);
@@ -71,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    try{
+                        db.execSQL(" DELETE FROM data WHERE id ="+ idM+";");
+                        GetData();
+                    }
+                    catch(Exception ex){
+
+                    }
 
                 }
             });
@@ -81,6 +85,15 @@ public class MainActivity extends AppCompatActivity {
             // editBtn.set(50);
             editBtn.setHeight(50);
             editBtn.setTop(50);
+
+            editBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NoteActivity.flag ="UPDATE";
+                    NoteActivity.id=idM;
+                    createNote(view);
+                }
+            });
 
 
             //setContentView(scrollView);
